@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <h2>Please Login</h2>
+
+            {% load crispy_forms_tags %}
+
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form|crispy }}
+                </div>
+                <!--{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}-->
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <div class="text-danger">
+                <p>{{ message }}</p>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

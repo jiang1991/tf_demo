@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <div>
+        <div class="col-10">
+            <h2>Config</h2>
+
+            <div class="text-danger">
+                <p>{{ message }}</p>
+            </div>
+
+            {% load crispy_forms_tags %}
+
+            <form action="/" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.mode|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.coin_count|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.game_count|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.game_time|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.music_volume|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.sound_volume|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.resolution|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.spare_1|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.spare_2|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.spare_3|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.spare_4|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.spare_5|as_crispy_field }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">OK</button>
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>
