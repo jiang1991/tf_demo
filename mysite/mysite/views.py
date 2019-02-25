@@ -1,6 +1,7 @@
 
 import socket
 import json
+import base64
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
@@ -40,10 +41,19 @@ def config(conf):
     return status
 
 def index(request):
-    # temp = loader.get_template('index.html')
-    psd = request.COOKIES.get('psd')
 
-    if psd != 'jiang':
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('login')
+        res.delete_cookie('psd')
+        return res
+
+    print(request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print(psd)
+
+    if psd != sys_config['password']:
         res = HttpResponseRedirect('login')
         res.delete_cookie('psd')
         return res
@@ -73,21 +83,28 @@ def index(request):
 
             status = config(json.dumps(conf))
 
+            data = query()
+            print(data)
+            # data = json.load(query(cmd))
+            form = ConfigForm(json.loads(data))
 
-    # else:
-    #     data = query()
-    #     print(data)
-    #     # data = json.load(query(cmd))
-    #     form = ConfigForm(json.loads(data))
+            res = render(request, 'index.html', {'form': form, 'message': status})
+            return res
 
 
-    data = query()
-    print(data)
-    # data = json.load(query(cmd))
-    form = ConfigForm(json.loads(data))
+        else:
+            print(form.errors)
+            return render(request, "index.html", {'form': form, 'error': form.errors})
 
-    res = render(request, 'index.html', {'form': form, 'message': status})
-    return res
+
+    else:
+        data = query()
+        print(data)
+        # data = json.load(query(cmd))
+        form = ConfigForm(json.loads(data))
+
+        res = render(request, 'index.html', {'form': form, 'message': status})
+        return res
 
 
 
@@ -107,7 +124,10 @@ def login(request):
 
             if psd == sys_config['password']:
                 res = HttpResponseRedirect('/')
-                res.set_cookie('psd', sys_config['password'], expires=60*60*24)
+                cookie = base64.b64encode(str.encode(sys_config['password'])).decode()
+                print("cookie: " + cookie)
+                res.set_cookie('psd', cookie, expires=60*60*24)
+
                 return res
                 # return HttpResponseRedirect('/').set_cookie('psd', 'jiang', expires=60*60*24)
             else:
@@ -119,5 +139,6 @@ def login(request):
     res = render(request, 'login.html', {'form': form, 'message': message})
     res.delete_cookie('psd')
     return res
+
 
 
