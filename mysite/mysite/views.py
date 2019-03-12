@@ -11,6 +11,7 @@ from .form.LoginForm import LoginForm
 from .form.ConfigForm import ConfigForm
 
 from .config.config import sys_config
+from .data import json_res
 
 # CMD
 cmd = '{"cmd" : "get_data"}'
@@ -39,6 +40,28 @@ def config(conf):
     s.close()
 
     return status
+
+
+def console(request):
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    print("console" + request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print("console" + psd)
+
+    if psd != sys_config['password']:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    res = render(request, 'console.html')
+    return res
+
 
 def index(request):
 
@@ -88,8 +111,9 @@ def index(request):
             # data = json.load(query(cmd))
             form = ConfigForm(json.loads(data))
 
-            res = render(request, 'index.html', {'form': form, 'message': status})
-            return res
+            # res = render(request, 'index.html', {'form': form, 'message': status})
+            # return res
+            return HttpResponseRedirect('/', {'message': status})
 
 
         else:
@@ -141,4 +165,55 @@ def login(request):
     return res
 
 
+def signin(request):
+
+    res = render(request, 'signin.html')
+    return res
+
+
+def test(request):
+
+    res = render(request, 'test.html')
+    return res
+
+
+def api_login(request):
+    psd = json.loads(request.body)["password"]
+    message = ''
+
+    if ('password' not in sys_config or sys_config['password'] == ''):
+        message = "password not set"
+
+    if psd != sys_config['password']:
+        message = "wrong password"
+
+    if (message == ''):
+        resp = {'status': 'ok'}
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+    else:
+        resp = {'status': 'error', 'error': message}
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+def api_json(request):
+    cmd = json.loads(request.body)['cmd']
+
+    res = ''
+
+    if cmd == 'get_data':
+        res = json_res.res_get_Data
+    elif cmd == 'modify_data':
+        res = json_res.res_modify_data
+    elif cmd == 'set_wifi_state':
+        res = json_res.res_set_wifi
+    elif cmd == 'scan_robot':
+        res = json_res.res_scan_robot
+    elif cmd == 'get_robot_info':
+        res = json_res.res_get_robot_info
+    elif cmd == 'set_robot_info':
+        res = json_res.res_set_robot_info
+    elif cmd == 'auto_pairing':
+        res = json_res.res_pair
+
+    return HttpResponse(res, content_type="application/json")
 

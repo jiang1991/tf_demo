@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/app.css">
+    <!-- <link rel="stylesheet" href="/static/css/slider.css"> -->
+
+</head>
+
+<body>
+
+
+  <div class="container">
+
+    <div class="row justify-content-md-center">
+      <div class="col col-8">
+        <h1 class="text-center">游戏设置</h1>
+      </div>
+    </div>
+
+    
+    <div class="row justify-content-md-center">
+    
+      <div class="col col-8" id="config_box">
+
+        <div class="row justify-content-md-center">
+          <div class="col col-8">
+            <button v-on:click="read_config" class="btn btn-primary">读取</button>
+            <button v-on:click="write_config" class="btn btn-primary">写入</button>
+          </div>
+        </div>
+        
+        <div class="row justify-content-md-center">
+          <div class="col col-8">
+            <div v-if ="message" class="alert alert-danger small" role="alert">
+              {% verbatim %}
+              {{ message }}
+              {% endverbatim %}
+            </div>
+          </div>
+        </div>
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>
+                <p>游戏模式</p>
+              </th>
+              <th>
+                <select v-model="current_mode">
+                  <option disabled value="">请选择</option>
+                  <option value="team_mode">团队模式</option>
+                  <option value="melee_mode">大乱斗模式</option>
+                  <option value="football_mode">足球模式</option>
+                </select>
+              </th>
+            </tr>
+
+            <tr>
+              <th>
+                <p>游戏局数</p>
+              </th>
+              <th>
+                <select v-model="game_count">
+                  <option disabled value="">请选择</option>
+                  <option value="0">一局 BO1</option>
+                  <option value="1">三局两胜 BO3</option>
+                </select>
+              </th>
+            </tr>
+
+            <tr>
+              <th>
+                <p>单局游戏时间(单位:秒)</p>
+              </th>
+              <th>
+                <input type="number" v-model="game_time" placeholder="10~999">
+                <div v-if="errors.game_time" class="alert alert-danger small" role="alert">
+                  10~999
+                </div>
+              </th>
+            </tr>
+            
+            <tr>
+              <th>
+                <p>投币数(几币一局)</p>
+              </th>
+              <th>
+                <input type="number" v-model="coin_count" placeholder="">
+              </th>
+            </tr>
+
+            <tr>
+              <th>
+                <p>分辨率</p>
+              </th>
+              <th>
+                <input v-model="resolution" placeholder="">
+              </th>
+            </tr>
+
+            <tr>
+              <th>
+                <p>背景音乐音量</p>
+              </th>
+              <th>
+                <!-- <vue-slider ref="slider" v-model="music_volume" v-bind="options"></vue-slider> -->
+                <input type="range" v-model="music_volume" placeholder="">
+                <p>{% verbatim %}
+                  {{ music_volume }}
+                  {% endverbatim %}</p>
+              </th>
+            </tr>
+
+            <tr>
+              <th>
+                <p>游戏音乐音量</p>
+              </th>
+              <th>
+                <!-- <vue-slider ref="slider" v-model="sound_volume" v-bind="options"></vue-slider> -->
+                <input type="range" v-model="sound_volume" placeholder="">
+                <p>{% verbatim %}
+                {{ sound_volume }}
+                {% endverbatim %}</p>
+              </th>
+            </tr>
+
+            <tr v-if = "current_mode != 'football_mode'">
+              <th>
+                <p>重击血量</p>
+              </th>
+              <th>
+                <!-- <vue-slider ref="slider" v-model="sound_volume" v-bind="options"></vue-slider> -->
+                <input type="number" v-model="thump_blood" placeholder="20~50">
+                <div v-if="errors.thump_blood" class="alert alert-danger small" role="alert">
+                  20~50
+                </div>
+              </th>
+            </tr>
+
+            <tr v-if = "current_mode != 'football_mode'">
+              <th>
+                <p>轻击血量</p>
+              </th>
+              <th>
+                <!-- <vue-slider ref="slider" v-model="sound_volume" v-bind="options"></vue-slider> -->
+                <input type="number" v-model="tap_blood" placeholder="10~40">
+                <div v-if="errors.thump_blood" class="alert alert-danger small" role="alert">
+                  10~40
+                </div>
+              </th>
+            </tr>
+
+            <tr v-if = "current_mode != 'football_mode'">
+              <th>
+                <p>技能个数</p>
+              </th>
+              <th>
+                <!-- <vue-slider ref="slider" v-model="sound_volume" v-bind="options"></vue-slider> -->
+                <!-- <input v-model="skill_number" placeholder=""> -->
+                <select class="form-control" v-model="skill_number">
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </th>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/static/vue.js"></script>
+  <script src="/static/js/jquery.js"></script>
+  <script src="/static/js/bootstrap.js"></script>
+  <script src="/static/js/bootstrap.bundle.js"></script>
+    
+  <script src="/static/js/console.js"></script>
+  <!-- <script src="/static/js/slider.js"></script> -->
+
+</body>
+
+</html>
