@@ -28,7 +28,7 @@ def query():
 
     return sql_query
 
-def config(conf):
+def index_config(conf):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     s.sendto(bytes(conf, 'utf-8'), (server_ip, server_port))
@@ -60,6 +60,27 @@ def console(request):
         return res
 
     res = render(request, 'console.html')
+    return res
+
+
+def config(request):
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    print("console" + request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print("console" + psd)
+
+    if psd != sys_config['password']:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    res = render(request, 'config.html')
     return res
 
 
@@ -104,7 +125,7 @@ def index(request):
 
             print(json.dumps(conf))
 
-            status = config(json.dumps(conf))
+            status = index_config(json.dumps(conf))
 
             data = query()
             print(data)
@@ -178,7 +199,8 @@ def test(request):
 
 
 def api_login(request):
-    psd = json.loads(request.body)["password"]
+    print(type(request.body))
+    psd = json.loads(str(request.body,'utf-8'))["password"]
     message = ''
 
     if ('password' not in sys_config or sys_config['password'] == ''):
