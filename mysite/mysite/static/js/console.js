@@ -1,6 +1,6 @@
 
 
-var vue_config = new Vue({
+var vue_console = new Vue({
   el: '#config_box',
   data: {
     message: '',

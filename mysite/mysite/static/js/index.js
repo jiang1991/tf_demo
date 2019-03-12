@@ -14,6 +14,8 @@ var app = new Vue({
             var post_json = {};
             post_json.password = this.password;
             var send_json = JSON.stringify(post_json);
+
+            console.log(send_json);
 //            this.err_msg = this.password;
 //            this.seen = true
 

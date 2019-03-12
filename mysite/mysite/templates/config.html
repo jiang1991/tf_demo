@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Config</title>
+
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <!-- <link rel="stylesheet" href="/static/css/slider.css"> -->
+
+</head>
+
+<body>
+
+
+  <div class="container" id="robot_box">
+    <div class="row justify-content-md-center">
+      <div class="col col-8">
+        <h1 class="text-center">机器人设置</h1>
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+
+      <div class="col col-2" style="padding: 1%; margin: 1%;">
+        <div class="row">
+          <a href="/console" class="btn btn btn-dark">游戏设置</a>
+        </div>
+        <div class="row">
+          <p> </p>
+        </div>
+        <div class="row">
+          <a href="/config" class="btn btn btn-dark">机器人设置</a>
+        </div>
+      </div>
+
+      <div class="col col-7" style="padding: 1%; margin: 1%;">
+        <div class="row justify-content-md-center">
+          <div>
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="row  justify-content-md-center">
+                        <p>配置网络： </p>
+                        <div class="custom-control custom-switch">
+                          <input v-on:click.stop="cmd_set_wifi" v-model="set_wifi" type="checkbox" class="custom-control-input" id="customSwitches">
+                          <label class="custom-control-label" for="customSwitches">
+                            <!-- {% verbatim %}
+                            {{ set_wifi }}
+                            {% endverbatim %} -->
+                          </label>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <th>
+                      <div class="row justify-content-md-center">
+                        <div class="col col-10">
+                          <div v-if="message" class="alert alert-danger small" role="alert">
+                            {% verbatim %}
+                            {{ message }}
+                            {% endverbatim %}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="row" v-if="set_wifi">
+                        <div class="col col-6" v-for="(robot, index) in robots">
+                          <div class="card" style="padding: 1%; margin: 1%;">
+                            <div class="form-group row">
+                              <label class="col-4 col-form-label" for="robot_set_id">编号</label>
+                              <div>
+                                <input id="robot_set_id" type="text" readonly class="form-control-plaintext" v-model="robot.id">
+                              </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                              <label class="col-4 col-form-label" for="robot_set_ip">IP</label>
+                              <div>
+                                <input id="robot_set_ip" type="text" readonly class="form-control-plaintext" v-model="robot.ip">
+                              </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                              <label class="col-4 col-form-label" for="robot_set_ssid">wifi名称</label>
+                              <div>
+                                <input id="robot_set_ssid" type="text" v-model="robot.ssid">
+                              </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                              <label class="col-4 col-form-label" for="robot_set_psd">wifi 密码</label>
+                              <div>
+                                <input id="robot_set_psd" type="text" v-model="robot.password">
+                              </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                              <label class="col-4 col-form-label" for="robot_control_id">控制手柄编号</label>
+                              <div>
+                                <input id="robot_control_id" type="text" v-model="robot.control_id">
+                              </div>
+                            </div>
+                            <div class="col col-8">
+                              <button v-on:click="get_robot_info(index)" class="btn btn-primary">读取</button>
+                              <button v-on:click="set_robot_info(index)" class="btn btn-primary">写入</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        
+        
+          </div>
+      </div>
+      </div>
+      
+      <div class="col col-1" style="padding: 1%; margin: 1%;" id="control_box">
+        <div class="row">
+          <button v-on:click="scan_robots" :disabled="!set_wifi" class="btn btn-primary">批量读取</button>
+        </div>
+        <div class="row">
+          <p> </p>
+        </div>
+        <div class="row">
+          <button v-on:click="set_robots" :disabled="!set_wifi" class="btn btn-primary">批量写入</button>
+        </div>
+        <div class="row">
+          <p> </p>
+        </div>
+        <div class="row">
+          <button v-on:click="" :disabled="!set_wifi" class="btn btn-primary">扫描</button>
+        </div>
+        <div class="row">
+          <p> </p>
+        </div>
+        <div class="row">
+          <button v-on:click="auto_pair" :disabled="!set_wifi" class="btn btn-primary">自动</button>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+
+  <script src="/static/vue.js"></script>
+  <script src="/static/js/jquery.js"></script>
+  <script src="/static/js/bootstrap.js"></script>
+  <script src="/static/js/bootstrap.bundle.js"></script>
+
+  <script src="/static/js/config.js"></script>
+  <!-- <script src="/static/js/slider.js"></script> -->
+
+</body>
+
+</html>

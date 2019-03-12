@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.signin, name='index'),
     path('login', views.login, name='login'),
 
     # api
@@ -30,5 +30,6 @@ urlpatterns = [
     path('signin', views.signin, name='signin'),
     path('test', views.test, name='test'),
     path('console', views.console, name='console'),
+    path('config', views.config, name='config'),
 
 ]

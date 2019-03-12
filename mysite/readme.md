@@ -8,6 +8,7 @@
 4. copy all the folder 'py_learn/mysite' to your project 'dir'
 5. run server ` $ python manage.py runserver `
 6. default index page: ` http://127.0.0.1:8000/ `
+7. websocket address: `mysite/views.py @api_json`
 
 参考文档:
 > https://docs.djangoproject.com/zh-hans/2.0/intro/tutorial01/

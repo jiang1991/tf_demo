@@ -48,18 +48,42 @@ res_set_wifi = '''{
 
 res_scan_robot = '''{
     "robot_num": 2,
-    "robot_1": {
+    "robots": [
+        {
         "id": 1,
         "ip": "192.168.1.2",
-        "ssid": "wifi_ssid",
-        "password": "wifi_password"
-    },
-    "robot_2": {
+        "ssid": "timei123123ii",
+        "password": "wifi_pass312312word123",
+        "control_id": 2
+      },
+      {
         "id": 2,
         "ip": "192.168.1.3",
         "ssid": "wifi_ssid",
-        "password": "wifi_password"
-    }
+        "password": "312424",
+        "control_id": 1
+      },
+      {
+        "id": 3,
+        "ip": "192.168.1.2",
+        "ssid": "wifi_ssid",
+        "password": "wifi_p2412assword",
+        "control_id": 1
+      },
+      {
+        "id": 4,
+        "ip": "192.168.1.3",
+        "ssid": "wifi_ssid",
+        "password": "wifi_password",
+        "control_id": 1
+      }
+    ]
+}'''
+
+
+res_set_robots = '''{
+    "return": 1,
+    "error_message": "错误信息"
 }'''
 
 

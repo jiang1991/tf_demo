@@ -2,6 +2,8 @@
 import socket
 import json
 import base64
+import asyncio
+import websockets
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,6 +14,7 @@ from .form.ConfigForm import ConfigForm
 
 from .config.config import sys_config
 from .data import json_res
+
 
 # CMD
 cmd = '{"cmd" : "get_data"}'
@@ -216,26 +219,30 @@ def api_login(request):
         resp = {'status': 'error', 'error': message}
         return HttpResponse(json.dumps(resp), content_type="application/json")
 
+async def ws_request(cmd):
+    async with websockets.connect(
+            'ws://127.0.0.1:9000') as websocket:
+
+        await websocket.send(cmd)
+        print(f"> {cmd}")
+
+        response = await websocket.recv()
+        print(response)
+
+        return response
+
 
 def api_json(request):
-    cmd = json.loads(request.body)['cmd']
 
-    res = ''
+    from websocket import create_connection
+    ws = create_connection("ws://127.0.0.1:9000")
+    print("Sending..." + str(request.body, 'utf-8'))
+    ws.send(request.body)
+    print("Sent")
+    print("Receiving...")
+    result = ws.recv()
+    print(type(result), result)
+    ws.close()
 
-    if cmd == 'get_data':
-        res = json_res.res_get_Data
-    elif cmd == 'modify_data':
-        res = json_res.res_modify_data
-    elif cmd == 'set_wifi_state':
-        res = json_res.res_set_wifi
-    elif cmd == 'scan_robot':
-        res = json_res.res_scan_robot
-    elif cmd == 'get_robot_info':
-        res = json_res.res_get_robot_info
-    elif cmd == 'set_robot_info':
-        res = json_res.res_set_robot_info
-    elif cmd == 'auto_pairing':
-        res = json_res.res_pair
-
-    return HttpResponse(res, content_type="application/json")
+    return HttpResponse(result, content_type="application/json")
 
