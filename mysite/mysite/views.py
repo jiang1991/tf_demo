@@ -1,6 +1,9 @@
 
 import socket
 import json
+import base64
+import asyncio
+import websockets
 
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,6 +13,8 @@ from .form.LoginForm import LoginForm
 from .form.ConfigForm import ConfigForm
 
 from .config.config import sys_config
+from .data import json_res
+
 
 # CMD
 cmd = '{"cmd" : "get_data"}'
@@ -26,7 +31,7 @@ def query():
 
     return sql_query
 
-def config(conf):
+def index_config(conf):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     s.sendto(bytes(conf, 'utf-8'), (server_ip, server_port))
@@ -39,11 +44,63 @@ def config(conf):
 
     return status
 
-def index(request):
-    # temp = loader.get_template('index.html')
-    psd = request.COOKIES.get('psd')
 
-    if psd != 'jiang':
+def console(request):
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    print("console" + request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print("console" + psd)
+
+    if psd != sys_config['password']:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    res = render(request, 'console.html')
+    return res
+
+
+def config(request):
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    print("console" + request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print("console" + psd)
+
+    if psd != sys_config['password']:
+        res = HttpResponseRedirect('signin')
+        res.delete_cookie('psd')
+        return res
+
+    res = render(request, 'config.html')
+    return res
+
+
+def index(request):
+
+    if request.COOKIES.get('psd') == None:
+        res = HttpResponseRedirect('login')
+        res.delete_cookie('psd')
+        return res
+
+    print(request.COOKIES.get('psd'))
+
+    # temp = loader.get_template('index.html')
+    psd = base64.b64decode(request.COOKIES.get('psd')).decode('utf-8')
+    print(psd)
+
+    if psd != sys_config['password']:
         res = HttpResponseRedirect('login')
         res.delete_cookie('psd')
         return res
@@ -71,23 +128,31 @@ def index(request):
 
             print(json.dumps(conf))
 
-            status = config(json.dumps(conf))
+            status = index_config(json.dumps(conf))
+
+            data = query()
+            print(data)
+            # data = json.load(query(cmd))
+            form = ConfigForm(json.loads(data))
+
+            # res = render(request, 'index.html', {'form': form, 'message': status})
+            # return res
+            return HttpResponseRedirect('/', {'message': status})
 
 
-    # else:
-    #     data = query()
-    #     print(data)
-    #     # data = json.load(query(cmd))
-    #     form = ConfigForm(json.loads(data))
+        else:
+            print(form.errors)
+            return render(request, "index.html", {'form': form, 'error': form.errors})
 
 
-    data = query()
-    print(data)
-    # data = json.load(query(cmd))
-    form = ConfigForm(json.loads(data))
+    else:
+        data = query()
+        print(data)
+        # data = json.load(query(cmd))
+        form = ConfigForm(json.loads(data))
 
-    res = render(request, 'index.html', {'form': form, 'message': status})
-    return res
+        res = render(request, 'index.html', {'form': form, 'message': status})
+        return res
 
 
 
@@ -107,7 +172,10 @@ def login(request):
 
             if psd == sys_config['password']:
                 res = HttpResponseRedirect('/')
-                res.set_cookie('psd', sys_config['password'], expires=60*60*24)
+                cookie = base64.b64encode(str.encode(sys_config['password'])).decode()
+                print("cookie: " + cookie)
+                res.set_cookie('psd', cookie, expires=60*60*24)
+
                 return res
                 # return HttpResponseRedirect('/').set_cookie('psd', 'jiang', expires=60*60*24)
             else:
@@ -120,4 +188,61 @@ def login(request):
     res.delete_cookie('psd')
     return res
 
+
+def signin(request):
+
+    res = render(request, 'signin.html')
+    return res
+
+
+def test(request):
+
+    res = render(request, 'test.html')
+    return res
+
+
+def api_login(request):
+    print(type(request.body))
+    psd = json.loads(str(request.body,'utf-8'))["password"]
+    message = ''
+
+    if ('password' not in sys_config or sys_config['password'] == ''):
+        message = "password not set"
+
+    if psd != sys_config['password']:
+        message = "wrong password"
+
+    if (message == ''):
+        resp = {'status': 'ok'}
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+    else:
+        resp = {'status': 'error', 'error': message}
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
+async def ws_request(cmd):
+    async with websockets.connect(
+            'ws://127.0.0.1:9000') as websocket:
+
+        await websocket.send(cmd)
+        print(f"> {cmd}")
+
+        response = await websocket.recv()
+        print(response)
+
+        return response
+
+
+def api_json(request):
+
+    from websocket import create_connection
+    ws = create_connection("ws://127.0.0.1:9000")
+    print("Sending..." + str(request.body, 'utf-8'))
+    ws.send(request.body)
+    print("Sent")
+    print("Receiving...")
+    result = ws.recv()
+    print(type(result), result)
+    ws.close()
+
+    return HttpResponse(result, content_type="application/json")
 

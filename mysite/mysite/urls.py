@@ -19,6 +19,17 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.signin, name='index'),
     path('login', views.login, name='login'),
+
+    # api
+    path('api/login', views.api_login, name='api_login'),
+    path('api/json', views.api_json, name='json'),
+
+    # new
+    path('signin', views.signin, name='signin'),
+    path('test', views.test, name='test'),
+    path('console', views.console, name='console'),
+    path('config', views.config, name='config'),
+
 ]

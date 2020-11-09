@@ -23,9 +23,7 @@ import pandas as pd
 
 from six.moves import StringIO
 
-import iris_data
-import custom_estimator
-import premade_estimator
+from tensorflow import premade_estimator, custom_estimator, iris_data
 
 FOUR_LINES = "\n".join([
     "1,52.40, 2823,152,2",
