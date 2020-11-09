@@ -9,11 +9,11 @@ import xml.dom.minidom
 # language list:
 # en -- fr -- sp -- cn -- cz -- dutch -- german -- Hu
 
-file_name = 'vihealth_strings.xlsx'
+file_name = 'vihealth_strings_5_27.xlsx'
 strings = pd.read_excel(file_name, sheet_name=0, index_col=0)
 
 # language doc list
-key_list = ["en", "fr", "sp", "cn", "cz", "dutch", "german", "Hu"]
+key_list = ["en", "fr", "sp", "cn", "hk", "cz", "dutch", "german", "Hu"]
 
 
 if __name__ == '__main__':

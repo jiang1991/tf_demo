@@ -152,7 +152,6 @@
 		<string name="O2_chart">SpO2(%)</string>
 		<string name="current_ver">Versión Actual: </string>
 		<string name="last_ver">Ultima Versión: </string>
-		<string name="less_than_one_hour">Tiempo &lt;1h</string>
 		<string name="note_connected">Nota: Para cambiar los ajustes, mantenga su aparato conectado.</string>
 		<string name="factory_reset">Restablecimiento de fábrica</string>
 		<string name="note_factory_reset">RESTAURARÁ la configuración predeterminada y BORRARÁ todos los datos en su dispositivo.</string>
@@ -259,4 +258,5 @@
 		<string name="contact_us">Contáctenos</string>
 		<string name="helpNsupport">Centro de ayuda</string>
 		<string name="drops_per_hour">Caídas/h</string>
+		<string name="less_than_one_hour">Tiempo&lt;1h</string>
 	</resources>

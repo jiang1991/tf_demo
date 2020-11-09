@@ -152,7 +152,6 @@
 		<string name="O2_chart">SpO2(%)</string>
 		<string name="current_ver">Aktuální verze: </string>
 		<string name="last_ver">Poslední verze: </string>
-		<string name="less_than_one_hour">Čas &lt;1h</string>
 		<string name="note_connected">Poznámka: Chcete-li změnit nastavení, nechte zařízení připojeno.</string>
 		<string name="factory_reset">Factory Reset</string>
 		<string name="note_factory_reset">Obnoví výchozí nastavení a zruší všechna data v zařízení.</string>
@@ -259,4 +258,5 @@
 		<string name="contact_us">Kontaktujte nás</string>
 		<string name="helpNsupport">Centrum nápovědy</string>
 		<string name="drops_per_hour">Pokles/h</string>
+		<string name="less_than_one_hour">Čas&lt;1h</string>
 	</resources>

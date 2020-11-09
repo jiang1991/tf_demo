@@ -152,7 +152,6 @@
 		<string name="O2_chart">SpO2(%)</string>
 		<string name="current_ver">Aktuelle Version: </string>
 		<string name="last_ver">Letzte Version: </string>
-		<string name="less_than_one_hour">Zeit &lt;1h</string>
 		<string name="note_connected">Hinweis: Um die Einstellungen zu ändern, lassen Sie Ihr Gerät angeschlossen.</string>
 		<string name="factory_reset">Werkseinstellung</string>
 		<string name="note_factory_reset">Die RESTORE-Standardeinstellungen werden gelöscht und alle Daten auf Ihrem Gerät werden gelöscht.</string>
@@ -260,4 +259,5 @@
 		<string name="contact_us">Kontaktiere uns</string>
 		<string name="helpNsupport">Hilfezentrum</string>
 		<string name="drops_per_hour">Abfall/Std.</string>
+		<string name="less_than_one_hour">Zeit&lt;1 Std.</string>
 	</resources>

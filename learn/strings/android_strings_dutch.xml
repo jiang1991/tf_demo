@@ -152,7 +152,6 @@
 		<string name="O2_chart">SpO2(%)</string>
 		<string name="current_ver">Huidige versie: </string>
 		<string name="last_ver">Laatste versie: </string>
-		<string name="less_than_one_hour">Time &lt;1h</string>
 		<string name="note_connected">Opmerking: houd uw apparaat verbonden om de instellingen te wijzigen.</string>
 		<string name="factory_reset">Fabrieksinstellingen</string>
 		<string name="note_factory_reset">Het zal de standaardinstellingen HERSTELLEN en alle gegevens op uw apparaat wissen.</string>
@@ -263,4 +262,5 @@
 		<string name="contact_us">Neem contact met ons op</string>
 		<string name="helpNsupport">Centro de ayuda</string>
 		<string name="drops_per_hour">Caídas/h</string>
+		<string name="less_than_one_hour">Tiempo&lt;1h</string>
 	</resources>
